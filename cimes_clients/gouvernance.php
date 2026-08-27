@@ -2,7 +2,7 @@
 <title>Gouvernance du CIMeS</title>
 <meta name="description" content="">
 <style>
-    /* ── Tous les styles existants (inchangés) ── */
+    /* ── TOUS LES STYLES (EXISTANTS) ── */
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
     :root {
@@ -110,28 +110,6 @@
         padding: 0 60px 60px;
     }
 
-    #gov-page .gov-hero__eyebrow {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .3em;
-        text-transform: uppercase;
-        color: #C9D95B;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    #gov-page .gov-hero__eyebrow::before {
-        content: '';
-        width: 30px;
-        height: 2px;
-        background: #C9D95B;
-        border-radius: 2px;
-        display: block;
-        flex-shrink: 0;
-    }
-
     #gov-page .gov-hero__h1 {
         font-size: clamp(46px, 7vw, 86px);
         color: #fff;
@@ -147,15 +125,6 @@
         color: #9FE1CB;
         display: block;
         font-weight: 300;
-    }
-
-    #gov-page .gov-hero__desc {
-        font-size: 13.5px;
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.72);
-        max-width: 500px;
-        line-height: 1.7;
-        margin: 0;
     }
 
     /* ── NAV ── */
@@ -305,7 +274,6 @@
         margin-bottom: 80px;
     }
 
-    /* Direction grid : 2 colonnes, la première carte occupe toute la largeur */
     .direction-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -322,7 +290,7 @@
         gap: 16px;
     }
 
-    /* ════════════════ CARTE DIRECTION (inchangée) ════════════════ */
+    /* ════════════════ CARTE DIRECTION ════════════════ */
     .dcard {
         background: var(--surface);
         border-radius: 2px;
@@ -495,7 +463,7 @@
         padding: 20px 24px 24px;
     }
 
-    /* ════════════════ CARTE PERSONNES (CG, Bureau, CS, CO) ════════════════ */
+    /* ════════════════ CARTE PERSONNES ════════════════ */
     .pcard {
         background: var(--surface);
         border-radius: 2px;
@@ -736,7 +704,7 @@
         border: 1px solid rgba(15, 118, 110, .16);
     }
 
-    /* ════════════════ CARTE « FEATURED » POUR LA PRÉSIDENTE ════════════════ */
+    /* ════════════════ CARTE FEATURED (Présidente) ════════════════ */
     .featured-wrap {
         display: flex;
         justify-content: center;
@@ -867,11 +835,6 @@
         box-shadow: 0 12px 30px rgba(15, 118, 110, .35);
     }
 
-    .partners-btn:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(159, 225, 203, 0.4);
-    }
-
     .fade-in {
         opacity: 0;
         transform: translateY(18px);
@@ -958,7 +921,6 @@
     </div>
 
     <div class="gov-wrapper">
-        <!-- Schéma (inchangé) -->
         <div class="schema-wrap fade-in">
             <div class="schema-title">Schéma de gouvernance</div>
             <div class="schema-flow" id="schema-flow"></div>
@@ -972,9 +934,7 @@
                 </div>
                 <div class="sec-ghost">CG</div>
             </div>
-            <!-- Conteneur pour la carte mise en avant (Présidente) -->
             <div id="cg-featured" class="featured-wrap"></div>
-            <!-- Grille pour les autres membres (dont Florence Mazier) -->
             <div class="people-grid" id="cg-grid"></div>
         </section>
 
@@ -989,7 +949,7 @@
             <div class="direction-grid" id="direction-grid"></div>
         </section>
 
-        <!-- 3. BUREAU (nouveau) -->
+        <!-- 3. BUREAU -->
         <section id="bureau" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
@@ -1022,7 +982,7 @@
             <div class="people-grid" id="co-grid"></div>
         </section>
 
-        <!-- PARTENAIRES (inchangé) -->
+        <!-- PARTENAIRES -->
         <section id="partenaires" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
@@ -1044,11 +1004,16 @@
         const DIR_BANNER = ['clr-gold', 'clr-green', 'clr-sage'];
         const CG_DOTS = ['deep', 'plum', 'terra', 'teal', 'gold', 'sage', 'deep'];
 
-        // ---- Fonctions utilitaires ----
+        // ---- UTILITAIRES ----
         function fullName(m) {
             const p = m.prenom ? m.prenom.trim() : '';
             const n = m.nom ? m.nom.trim() : '';
             return (p + ' ' + n).trim();
+        }
+
+        // Normalisation : sans accents, minuscules
+        function normalizeName(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         }
 
         function avatarUrl(m, bg = '0F766E', color = 'fff', size = 120, fontsize = 0.5) {
@@ -1067,8 +1032,7 @@
             return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
         }
 
-        // ---- Fonctions de rendu ----
-        // Carte « direction » – inchangée
+        // ---- FONCTIONS DE RENDU ----
         function renderDir(m, i) {
             const name = fullName(m);
             const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
@@ -1103,7 +1067,6 @@
         </div>`;
         }
 
-        // Carte « featured » pour la Présidente (Emmanuelle Garnier)
         function renderFeatured(m) {
             const name = fullName(m);
             const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
@@ -1124,7 +1087,6 @@
         </div>`;
         }
 
-        // Carte standard pour les autres personnes (CG, Bureau, CS, CO)
         function renderPerson(m, dotClass = '') {
             const name = fullName(m);
             const p = avatarUrl(m, '134e4a', '9FE1CB', 120, 0.45);
@@ -1162,7 +1124,7 @@
         </div>`;
         }
 
-        // ---- Toggle functions ----
+        // ---- TOGGLES ----
         function toggleDCard(c) {
             const p = c.querySelector('.dcard-panel'),
                 o = c.classList.contains('open');
@@ -1205,7 +1167,7 @@
             }
         }
 
-        // ---- Chargement des données ----
+        // ---- CHARGEMENT ----
         Promise.all([
             fetch(`${API_URL}?query=gouvernance_schema`).then(r => r.json()),
             fetch(`${API_URL}?query=gouvernance`).then(r => r.json())
@@ -1220,36 +1182,32 @@
              </div>`
             ).join('');
 
-            // Fonction de tri alphabétique (prénom + nom)
             const sortByName = (a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
                 sensitivity: 'base'
             });
 
-            // 1. Direction : ne garder que Marie Bal et Emmanuelle Salim
+            // 1. Direction : Marie Bal et Emmanuelle Salim uniquement
             const directionAll = membres.filter(m => m.type === 'direction');
             const directionFiltered = directionAll.filter(m => {
-                const name = fullName(m);
-                return name === 'Marie Bal' || name === 'Emmanuelle Salim';
+                const name = normalizeName(fullName(m));
+                return name === normalizeName('Marie Bal') || name === normalizeName('Emmanuelle Salim');
             });
-            // On les trie (par ordre alphabétique, mais on peut aussi les laisser dans l'ordre de la BDD)
             directionFiltered.sort(sortByName);
             document.getElementById('direction-grid').innerHTML = directionFiltered.map((m, i) => renderDir(m, i)).join('');
 
-            // 2. Conseil de groupement : séparer Emmanuelle Garnier des autres
+            // 2. Conseil de groupement : Emmanuelle Garnier en featured
             const cgAll = membres.filter(m => m.type === 'conseil_groupement');
-            const president = cgAll.find(m => fullName(m) === 'Emmanuelle Garnier');
-            const autresCG = cgAll.filter(m => fullName(m) !== 'Emmanuelle Garnier').sort(sortByName);
+            const president = cgAll.find(m => normalizeName(fullName(m)) === normalizeName('Emmanuelle Garnier'));
+            const autresCG = cgAll.filter(m => normalizeName(fullName(m)) !== normalizeName('Emmanuelle Garnier')).sort(sortByName);
 
-            // Mettre la Présidente en featured
             if (president) {
                 document.getElementById('cg-featured').innerHTML = renderFeatured(president);
             } else {
-                document.getElementById('cg-featured').innerHTML = ''; // si absente, vide
+                document.getElementById('cg-featured').innerHTML = '';
             }
-            // Les autres membres (dont Florence Mazier) en grille standard
             document.getElementById('cg-grid').innerHTML = autresCG.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
 
-            // 3. Bureau (type 'bureau')
+            // 3. Bureau
             const bureau = membres.filter(m => m.type === 'bureau').sort(sortByName);
             document.getElementById('bureau-grid').innerHTML = bureau.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
 
@@ -1264,7 +1222,7 @@
             initPage();
         }).catch(err => console.error('Erreur:', err));
 
-        // ---- Initialisation (fade-in et scroll spy) ----
+        // ---- INIT ----
         function initPage() {
             const obs = new IntersectionObserver(e => {
                 e.forEach(x => {
