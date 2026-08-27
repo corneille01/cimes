@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "nom": "Massif Central" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.0, 44.5],
+          [3.5, 44.2],
+          [4.2, 45.0],
+          [3.8, 45.8],
+          [2.8, 46.0],
+          [1.8, 45.7],
+          [1.2, 45.2],
+          [1.5, 44.6],
+          [2.0, 44.5]
+        ]]
+      }
+    }
+  ]
+}

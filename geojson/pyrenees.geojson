@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "nom": "Pyrénées" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-1.8, 43.0],
+          [0.0, 42.8],
+          [1.5, 42.9],
+          [2.5, 43.2],
+          [2.2, 43.8],
+          [1.0, 44.0],
+          [-0.5, 43.8],
+          [-1.5, 43.5],
+          [-1.8, 43.0]
+        ]]
+      }
+    }
+  ]
+}

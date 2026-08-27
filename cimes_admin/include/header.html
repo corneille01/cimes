@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Connexion</title>
+    <meta name="description" content="" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="first-container">
+      <div class="wrapper nav-container">
+        <div class="logo">
+          <a href="../cimes_clients/index.php">
+            <img src="../cimes_clients/img/logo_cimes1.png" alt="CIMeS" />
+          </a>
+        </div>
+
+        <input type="radio" name="slider" id="menu-btn" />
+        <input type="radio" name="slider" id="close-btn" />
+
+        <div class="nav-overlay" id="navOverlay"></div>
+
+        <ul class="nav-links" id="nav-links"></ul>
+
+        <label for="menu-btn" class="btn menu-btn">
+          <i class="fas fa-bars"></i>
+        </label>
+      </div>
+    </nav>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          const [userRes, adminRes] = await Promise.all([
+            fetch("../cimes_clients/user_info.php"),
+            fetch("../cimes_clients/admin_info.php"),
+          ]);
+          const userInfo = await userRes.json();
+          const adminInfo = await adminRes.json();
+
+          // navbar filtré visible=1 uniquement
+          const navRes = await fetch(
+            "../cimes_api/index_api_head.php?query=navbar",
+          );
+          let data = await navRes.json();
+
+          if (adminInfo.firstname && adminInfo.lastname) {
+            data.push({
+              name: adminInfo.lastname,
+              url: "../cimes_clients/dashboard.php",
+              icon: "fa-solid fa-user",
+            });
+          } else if (userInfo.firstname && userInfo.lastname) {
+            data.push({
+              name: userInfo.lastname,
+              url: "../cimes_clients/dashboard.php",
+              icon: "fa-solid fa-user",
+            });
+          } else {
+            data.push({
+              name: "Se connecter",
+              url: "../cimes_clients/espace_personnel.php",
+              icon: "fa-solid fa-right-to-bracket",
+              class: "login-link",
+            });
+          }
+
+          generateNav(data);
+        } catch (error) {
+          console.error("Erreur globale :", error);
+        }
+      });
+
+      function generateNav(items) {
+        const navLinks = document.getElementById("nav-links");
+        navLinks.innerHTML = "";
+
+        const closeLbl = document.createElement("label");
+        closeLbl.setAttribute("for", "close-btn");
+        closeLbl.className = "btn close-btn";
+        closeLbl.innerHTML = '<i class="fas fa-times"></i>';
+        navLinks.appendChild(closeLbl);
+
+        items.forEach((item, index) => {
+          const li = document.createElement("li");
+          const hasSub = item.sub_items && item.sub_items.length > 0;
+
+          // Lien desktop
+          const desktopLink = document.createElement("a");
+          desktopLink.href = item.url || "#";
+          desktopLink.className =
+            "desktop-item" + (item.class ? " " + item.class : "");
+          if (item.icon) {
+            const ic = document.createElement("i");
+            ic.className = item.icon;
+            desktopLink.appendChild(ic);
+          }
+          desktopLink.appendChild(document.createTextNode(" " + item.name));
+          if (hasSub) {
+            const chev = document.createElement("i");
+            chev.className = "fas fa-chevron-down chev-icon";
+            desktopLink.appendChild(chev);
+          }
+          li.appendChild(desktopLink);
+
+          // Lien mobile
+          if (hasSub) {
+            const cbId = "showSub" + index;
+            const cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.id = cbId;
+            cb.className = "sub-toggle";
+            li.appendChild(cb);
+
+            const mobileLabel = document.createElement("label");
+            mobileLabel.setAttribute("for", cbId);
+            mobileLabel.className =
+              "mobile-item" + (item.class ? " " + item.class : "");
+            if (item.icon) {
+              const ic = document.createElement("i");
+              ic.className = item.icon;
+              mobileLabel.appendChild(ic);
+            }
+            mobileLabel.appendChild(document.createTextNode(" " + item.name));
+            const chevMob = document.createElement("span");
+            chevMob.className = "mobile-chev";
+            chevMob.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            mobileLabel.appendChild(chevMob);
+            li.appendChild(mobileLabel);
+          } else {
+            const mobileLink = document.createElement("a");
+            mobileLink.href = item.url || "#";
+            mobileLink.className =
+              "mobile-item" + (item.class ? " " + item.class : "");
+            if (item.icon) {
+              const ic = document.createElement("i");
+              ic.className = item.icon;
+              mobileLink.appendChild(ic);
+            }
+            mobileLink.appendChild(document.createTextNode(" " + item.name));
+            li.appendChild(mobileLink);
+          }
+
+          // Sous-menu (mega-box)
+          if (hasSub) {
+            const megaBox = document.createElement("div");
+            megaBox.className = "mega-box";
+
+            const content = document.createElement("div");
+            content.className = "content";
+
+            if (item.image) {
+              const rowImg = document.createElement("div");
+              rowImg.className = "row_image";
+              const img = document.createElement("img");
+              img.src = item.image;
+              img.alt = item.name;
+              rowImg.appendChild(img);
+              content.appendChild(rowImg);
+            }
+
+            const ul = document.createElement("ul");
+            ul.className = "mega-links";
+
+            item.sub_items.forEach((sub) => {
+              const subLi = document.createElement("li");
+              const subA = document.createElement("a");
+              subA.href = sub.url || "#";
+              subA.textContent = sub.name;
+              subLi.appendChild(subA);
+              ul.appendChild(subLi);
+            });
+
+            content.appendChild(ul);
+            megaBox.appendChild(content);
+            li.appendChild(megaBox);
+          }
+
+          navLinks.appendChild(li);
+        });
+
+        // Overlay
+        const overlay = document.getElementById("navOverlay");
+        overlay.addEventListener("click", () => {
+          document.getElementById("close-btn").click();
+          overlay.classList.remove("open");
+        });
+
+        document
+          .getElementById("menu-btn")
+          .addEventListener("change", function () {
+            overlay.classList.toggle("open", this.checked);
+          });
+        document
+          .getElementById("close-btn")
+          .addEventListener("change", function () {
+            overlay.classList.remove("open");
+          });
+      }
+    </script>
+  </body>
+</html>
