@@ -2,6 +2,7 @@
 <title>Gouvernance du CIMeS</title>
 <meta name="description" content="">
 <style>
+    /* ── Tous les styles existants (inchangés) ── */
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
     :root {
@@ -52,8 +53,6 @@
 
     #gov-page {
         display: block !important;
-        flex-direction: unset !important;
-        order: unset !important;
         width: 100%;
     }
 
@@ -315,7 +314,6 @@
 
     .direction-grid .dcard:first-child {
         grid-column: 1 / -1;
-        /* occupe les deux colonnes */
     }
 
     .people-grid {
@@ -324,7 +322,7 @@
         gap: 16px;
     }
 
-    /* ════════════════ CARTE DIRECTION ════════════════ */
+    /* ════════════════ CARTE DIRECTION (inchangée) ════════════════ */
     .dcard {
         background: var(--surface);
         border-radius: 2px;
@@ -497,7 +495,7 @@
         padding: 20px 24px 24px;
     }
 
-    /* ════════════════ CARTE PERSONNES ════════════════ */
+    /* ════════════════ CARTE PERSONNES (CG, Bureau, CS, CO) ════════════════ */
     .pcard {
         background: var(--surface);
         border-radius: 2px;
@@ -738,6 +736,112 @@
         border: 1px solid rgba(15, 118, 110, .16);
     }
 
+    /* ════════════════ CARTE « FEATURED » POUR LA PRÉSIDENTE ════════════════ */
+    .featured-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .featured-card {
+        max-width: 480px;
+        width: 100%;
+        background: var(--surface);
+        border: 2px solid var(--vert-mid);
+        border-radius: 2px;
+        overflow: hidden;
+        box-shadow: 0 12px 32px rgba(15, 118, 110, .15);
+        transition: transform .3s, box-shadow .3s;
+    }
+
+    .featured-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 48px rgba(15, 118, 110, .2);
+    }
+
+    .featured-card .fc-banner {
+        height: 60px;
+        background: linear-gradient(135deg, var(--vert-dark), var(--vert));
+        position: relative;
+    }
+
+    .featured-card .fc-banner::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .06) 0px, rgba(255, 255, 255, .06) 1px, transparent 1px, transparent 18px);
+    }
+
+    .featured-card .fc-photo-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: -46px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .featured-card .fc-photo {
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        border: 5px solid var(--surface);
+        object-fit: cover;
+        object-position: center top;
+        box-shadow: 0 4px 24px rgba(15, 118, 110, .25);
+        background: var(--bg);
+    }
+
+    .featured-card .fc-badge {
+        position: absolute;
+        bottom: -2px;
+        right: calc(50% - 60px);
+        background: #C9D95B;
+        color: var(--vert-dark);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        padding: 4px 14px;
+        border-radius: 20px;
+        border: 3px solid var(--surface);
+        white-space: nowrap;
+    }
+
+    .featured-card .fc-body {
+        padding: 16px 24px 28px;
+        text-align: center;
+    }
+
+    .featured-card .fc-name {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.15;
+        margin-bottom: 2px;
+    }
+
+    .featured-card .fc-role {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--vert);
+        margin-bottom: 6px;
+    }
+
+    .featured-card .fc-domain {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+
+    .featured-card .fc-affil {
+        font-size: 13px;
+        color: var(--hint);
+        margin-top: 4px;
+        font-style: italic;
+    }
+
     /* ── PARTENAIRES ── */
     .partners-btn {
         display: block;
@@ -779,7 +883,6 @@
         transform: none;
     }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
         .direction-grid {
             grid-template-columns: 1fr 1fr;
@@ -815,11 +918,19 @@
 
         .direction-grid .dcard:first-child {
             grid-column: auto;
-            /* pas d'étalement sur mobile, affichage normal */
         }
 
         .people-grid {
             grid-template-columns: 1fr;
+        }
+
+        .featured-card .fc-name {
+            font-size: 22px;
+        }
+
+        .featured-card .fc-photo {
+            width: 72px;
+            height: 72px;
         }
     }
 </style>
@@ -837,8 +948,9 @@
             </div>
         </div>
         <nav class="gov-sitenav">
-            <a href="#direction" class="gov-sitenav__a gov-sitenav__a--active">Présidence et Direction</a>
-            <a href="#conseil-groupement" class="gov-sitenav__a">Conseil de Groupement</a>
+            <a href="#presidence-groupement" class="gov-sitenav__a gov-sitenav__a--active">Présidence &amp; CG</a>
+            <a href="#direction" class="gov-sitenav__a">Direction</a>
+            <a href="#bureau" class="gov-sitenav__a">Bureau</a>
             <a href="#conseil-scientifique" class="gov-sitenav__a">Conseil Scientifique</a>
             <a href="#comite-orientation" class="gov-sitenav__a">Comité d'Orientation</a>
             <a href="#partenaires" class="gov-sitenav__a">Partenaires</a>
@@ -846,31 +958,49 @@
     </div>
 
     <div class="gov-wrapper">
+        <!-- Schéma (inchangé) -->
         <div class="schema-wrap fade-in">
             <div class="schema-title">Schéma de gouvernance</div>
             <div class="schema-flow" id="schema-flow"></div>
         </div>
 
+        <!-- 1. PRÉSIDENCE ET CONSEIL DE GROUPEMENT -->
+        <section id="presidence-groupement" class="gov-block fade-in">
+            <div class="sec-head">
+                <div>
+                    <div class="sec-title">Présidence et Conseil de groupement</div>
+                </div>
+                <div class="sec-ghost">CG</div>
+            </div>
+            <!-- Conteneur pour la carte mise en avant (Présidente) -->
+            <div id="cg-featured" class="featured-wrap"></div>
+            <!-- Grille pour les autres membres (dont Florence Mazier) -->
+            <div class="people-grid" id="cg-grid"></div>
+        </section>
+
+        <!-- 2. DIRECTION -->
         <section id="direction" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
-                    <div class="sec-title">Présidence et Direction</div>
+                    <div class="sec-title">Direction</div>
                 </div>
                 <div class="sec-ghost">Dir.</div>
             </div>
             <div class="direction-grid" id="direction-grid"></div>
         </section>
 
-        <section id="conseil-groupement" class="gov-block fade-in">
+        <!-- 3. BUREAU (nouveau) -->
+        <section id="bureau" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
-                    <div class="sec-title">Conseil de Groupement</div>
+                    <div class="sec-title">Bureau</div>
                 </div>
-                <div class="sec-ghost">CG</div>
+                <div class="sec-ghost">Bur.</div>
             </div>
-            <div class="people-grid" id="cg-grid"></div>
+            <div class="people-grid" id="bureau-grid"></div>
         </section>
 
+        <!-- 4. CONSEIL SCIENTIFIQUE -->
         <section id="conseil-scientifique" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
@@ -881,6 +1011,7 @@
             <div class="people-grid" id="cs-grid"></div>
         </section>
 
+        <!-- 5. COMITÉ D'ORIENTATION -->
         <section id="comite-orientation" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
@@ -891,6 +1022,7 @@
             <div class="people-grid" id="co-grid"></div>
         </section>
 
+        <!-- PARTENAIRES (inchangé) -->
         <section id="partenaires" class="gov-block fade-in">
             <div class="sec-head">
                 <div>
@@ -912,245 +1044,125 @@
         const DIR_BANNER = ['clr-gold', 'clr-green', 'clr-sage'];
         const CG_DOTS = ['deep', 'plum', 'terra', 'teal', 'gold', 'sage', 'deep'];
 
-        Promise.all([
-            fetch(`${API_URL}?query=gouvernance_schema`).then(r => r.json()),
-            fetch(`${API_URL}?query=gouvernance`).then(r => r.json())
-        ]).then(([schema, membres]) => {
-            // Schéma
-            document.getElementById('schema-flow').innerHTML = schema.map((n, i) =>
-                `${i>0?'<div class="schema-node-arrow">→</div>':''}
-                 <div class="schema-node accent">
-                     <div class="schema-node-name">${escapeHtml(n.titre)}</div>
-                     <div class="schema-node-desc">${escapeHtml(n.description||'')}</div>
-                     ${n.reunion?`<span class="schema-freq">${escapeHtml(n.reunion)}</span>`:''}
-                 </div>`).join('');
-
-            // Séparer les membres par type
-            const direction = membres.filter(m => m.type === 'direction');
-            const cg = membres.filter(m => m.type === 'conseil_groupement');
-            const cs = membres.filter(m => m.type === 'conseil_scientifique');
-            const co = membres.filter(m => m.type === 'comite_orientation');
-
-            // Rendu des cartes direction (la présidente en premier)
-            document.getElementById('direction-grid').innerHTML = direction.map((m, i) => renderDir(m, i)).join('');
-            document.getElementById('cg-grid').innerHTML = cg.map((m, i) => renderCG(m, i)).join('');
-            document.getElementById('cs-grid').innerHTML = cs.map(m => renderCS(m)).join('');
-            document.getElementById('co-grid').innerHTML = co.map(m => renderCO(m)).join('');
-            initPage();
-        }).catch(err => console.error('Erreur:', err));
-
-        // Fonction utilitaire : nom complet Prénom Nom
+        // ---- Fonctions utilitaires ----
         function fullName(m) {
             const p = m.prenom ? m.prenom.trim() : '';
             const n = m.nom ? m.nom.trim() : '';
             return (p + ' ' + n).trim();
         }
 
-        // Avatar URL avec fallback vers ui-avatars
         function avatarUrl(m, bg = '0F766E', color = 'fff', size = 120, fontsize = 0.5) {
             if (m.photo) return `img/${m.photo}`;
             const name = encodeURIComponent(fullName(m) || '?');
             return `https://ui-avatars.com/api/?name=${name}&background=${bg}&color=${color}&size=${size}&bold=true&font-size=${fontsize}`;
         }
 
-        // Badges de disciplines
         function disciplineTags(m) {
             if (!m.discipline) return '';
             return m.discipline.split(',').map(t => `<span class="tag">${escapeHtml(t.trim())}</span>`).join('');
         }
 
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+        }
+
+        // ---- Fonctions de rendu ----
+        // Carte « direction » – inchangée
         function renderDir(m, i) {
             const name = fullName(m);
             const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
             const tags = disciplineTags(m);
             const affil = m.laboratoire || m.tutelle || '';
             return `
-            <div class="dcard" onclick="toggleDCard(this)">
-                <div class="dcard-banner ${DIR_BANNER[i]||'clr-green'}"></div>
-                <div class="dcard-photo-wrap">
-                    <img class="dcard-photo" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=0F766E&color=fff&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
-                    <span class="dcard-badge ${DIR_BADGE_C[i]||''}">${DIR_BADGES[i]||''}</span>
-                </div>
-                <div class="dcard-body">
-                    <div class="dcard-name">${escapeHtml(name)}</div>
-                    <div class="dcard-role">${escapeHtml(m.role||'')}</div>
-                    <div class="dcard-domain">${escapeHtml(m.discipline||'')}</div>
-                    <div class="dcard-affil">${escapeHtml(affil)}</div>
-                    <div class="dcard-toggle"><span>Voir le profil</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
-                </div>
-                <div class="dcard-panel"><div class="dcard-acc">
-                    ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
-                    ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
-                    ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-                    ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-                    ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-                    ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-                    ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-                    ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-                    ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-                    ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
-                </div></div>
-            </div>`;
+        <div class="dcard" onclick="toggleDCard(this)">
+            <div class="dcard-banner ${DIR_BANNER[i]||'clr-green'}"></div>
+            <div class="dcard-photo-wrap">
+                <img class="dcard-photo" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=0F766E&color=fff&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
+                <span class="dcard-badge ${DIR_BADGE_C[i]||''}">${DIR_BADGES[i]||''}</span>
+            </div>
+            <div class="dcard-body">
+                <div class="dcard-name">${escapeHtml(name)}</div>
+                <div class="dcard-role">${escapeHtml(m.role||'')}</div>
+                <div class="dcard-domain">${escapeHtml(m.discipline||'')}</div>
+                <div class="dcard-affil">${escapeHtml(affil)}</div>
+                <div class="dcard-toggle"><span>Voir le profil</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </div>
+            <div class="dcard-panel"><div class="dcard-acc">
+                ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
+                ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
+                ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
+                ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
+                ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
+                ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
+                ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
+                ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
+                ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
+                ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
+            </div></div>
+        </div>`;
         }
 
-        function renderCG(m, i) {
+        // Carte « featured » pour la Présidente (Emmanuelle Garnier)
+        function renderFeatured(m) {
+            const name = fullName(m);
+            const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
+            const affil = m.etablissement || m.laboratoire || '';
+            return `
+        <div class="featured-card">
+            <div class="fc-banner"></div>
+            <div class="fc-photo-wrap">
+                <img class="fc-photo" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=0F766E&color=fff&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
+                <span class="fc-badge">Présidente</span>
+            </div>
+            <div class="fc-body">
+                <div class="fc-name">${escapeHtml(name)}</div>
+                <div class="fc-role">${escapeHtml(m.role||'')}</div>
+                <div class="fc-domain">${escapeHtml(m.discipline||'')}</div>
+                <div class="fc-affil">${escapeHtml(affil)}</div>
+            </div>
+        </div>`;
+        }
+
+        // Carte standard pour les autres personnes (CG, Bureau, CS, CO)
+        function renderPerson(m, dotClass = '') {
             const name = fullName(m);
             const p = avatarUrl(m, '134e4a', '9FE1CB', 120, 0.45);
-            const dotClass = CG_DOTS[i % CG_DOTS.length];
+            const tags = disciplineTags(m);
             const affil = m.etablissement || m.laboratoire || '';
-            const tags = disciplineTags(m);
+            const dot = dotClass ? `av-dot ${dotClass}` : 'av-dot';
             return `
-    <div class="pcard" onclick="toggleCard(this)">
-        <div class="pcard-top">
-            <div class="av-wrap">
-                <img class="av-img" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=134e4a&color=9FE1CB&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
-                <div class="av-dot ${dotClass}"></div>
-            </div>
-            <div class="pcard-info">
-                <div class="p-name">${escapeHtml(name)}</div>
-                <div class="p-role">${escapeHtml(m.role||'')}</div>
-                <div class="p-domain">${escapeHtml(m.discipline||'')}</div>
-                <div class="p-affil">${escapeHtml(affil)}</div>
-            </div>
-            <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
-        </div>
-        <div class="acc-panel"><div class="acc-body">
-            ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
-            ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
-            ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-            ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-            ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-            ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-            ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-            ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-            ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-            ${m.unites?`<div class="acc-row"><div class="acc-lbl">Unité(s) associée(s)</div><div class="acc-val"><div class="acc-tags">${m.unites.split(',').map(t=>`<span class="tag">${escapeHtml(t.trim())}</span>`).join('')}</div></div></div>`:''}
-            ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
-        </div></div>
-    </div>`;
-        }
-
-        function renderCS(m) {
-            const name = fullName(m);
-            const p = avatarUrl(m, '134e4a', '9FE1CB', 120, 0.38);
-            const tags = disciplineTags(m);
-            const affil = m.laboratoire || m.tutelle || '';
-            return `
-    <div class="pcard" onclick="toggleCard(this)">
-        <div class="pcard-top">
-            <div class="av-wrap"><img class="av-img" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=134e4a&color=9FE1CB&size=120&bold=true&font-size=0.38'" alt="${escapeHtml(name)}"><div class="av-dot"></div></div>
-            <div class="pcard-info">
-                <div class="p-name">${escapeHtml(name)}</div>
-                <div class="p-role">${escapeHtml(m.role||'')}</div>
-                <div class="p-domain">${escapeHtml(m.discipline||'')}</div>
-                <div class="p-affil">${escapeHtml(affil)}</div>
-            </div>
-            <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
-        </div>
-        <div class="acc-panel"><div class="acc-body">
-            ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
-            ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
-            ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-            ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-            ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-            ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-            ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-            ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-            ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-            ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
-        </div></div>
-    </div>`;
-        }
-
-        function renderCO(m) {
-            const name = fullName(m);
-            const p = avatarUrl(m, 'e2e8f0', '94a3b8', 120, 0.5);
-            const tags = disciplineTags(m);
-            const affil = m.laboratoire || m.tutelle || '';
-            return `
-    <div class="pcard" onclick="toggleCard(this)">
-        <div class="pcard-top">
-            <div class="av-wrap"><img class="av-img" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=?&background=e2e8f0&color=94a3b8&size=120&bold=true&font-size=0.5'" alt="${escapeHtml(name)}"><div class="av-dot mist"></div></div>
-            <div class="pcard-info">
-                <div class="p-name" style="color:var(--hint)">${escapeHtml(name)}</div>
-                <div class="p-role">${escapeHtml(m.role||'')}</div>
-                <div class="p-domain">${escapeHtml(m.discipline||'')}</div>
-                <div class="p-affil">${escapeHtml(affil)}</div>
-            </div>
-            <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
-        </div>
-        <div class="acc-panel"><div class="acc-body">
-            ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
-            ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
-            ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-            ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-            ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-            ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-            ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-            ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-            ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-            ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
-        </div></div>
-    </div>`;
-        }
-
-        function renderCS(m) {
-            const name = fullName(m);
-            const p = avatarUrl(m, '134e4a', '9FE1CB', 120, 0.38);
-            const tags = disciplineTags(m);
-            const affil = m.laboratoire || m.tutelle || '';
-            return `
-            <div class="pcard" onclick="toggleCard(this)">
-                <div class="pcard-top">
-                    <div class="av-wrap"><img class="av-img" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=134e4a&color=9FE1CB&size=120&bold=true&font-size=0.38'" alt="${escapeHtml(name)}"><div class="av-dot"></div></div>
-                    <div class="pcard-info">
-                        <div class="p-name">${escapeHtml(name)}</div>
-                        <div class="p-role">${escapeHtml(m.role||'')}</div>
-                        <div class="p-domain">${escapeHtml(m.discipline||'')}</div>
-                        <div class="p-affil">${escapeHtml(affil)}</div>
-                    </div>
-                    <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+        <div class="pcard" onclick="toggleCard(this)">
+            <div class="pcard-top">
+                <div class="av-wrap">
+                    <img class="av-img" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=134e4a&color=9FE1CB&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
+                    <div class="${dot}"></div>
                 </div>
-                <div class="acc-panel"><div class="acc-body">
-                    ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-                    ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-                    ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-                    ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-                    ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-                    ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-                </div></div>
-            </div>`;
+                <div class="pcard-info">
+                    <div class="p-name">${escapeHtml(name)}</div>
+                    <div class="p-role">${escapeHtml(m.role||'')}</div>
+                    <div class="p-domain">${escapeHtml(m.discipline||'')}</div>
+                    <div class="p-affil">${escapeHtml(affil)}</div>
+                </div>
+                <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
+            </div>
+            <div class="acc-panel"><div class="acc-body">
+                ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
+                ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
+                ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
+                ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
+                ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
+                ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
+                ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
+                ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
+                ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
+                ${m.unites?`<div class="acc-row"><div class="acc-lbl">Unité(s) associée(s)</div><div class="acc-val"><div class="acc-tags">${m.unites.split(',').map(t=>`<span class="tag">${escapeHtml(t.trim())}</span>`).join('')}</div></div></div>`:''}
+                ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
+            </div></div>
+        </div>`;
         }
 
-
-
-        function initPage() {
-            const obs = new IntersectionObserver(e => {
-                e.forEach(x => {
-                    if (x.isIntersecting) {
-                        x.target.classList.add('visible');
-                        obs.unobserve(x.target);
-                    }
-                });
-            }, {
-                threshold: 0.06,
-                rootMargin: '0px 0px -36px 0px'
-            });
-            document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-
-            const sec = document.querySelectorAll('section[id]'),
-                nav = document.querySelectorAll('.gov-sitenav__a');
-            window.addEventListener('scroll', () => {
-                let c = '';
-                sec.forEach(s => {
-                    if (scrollY >= s.offsetTop - 130) c = s.id;
-                });
-                nav.forEach(a => a.classList.toggle('gov-sitenav__a--active', a.getAttribute('href') === '#' + c));
-            }, {
-                passive: true
-            });
-        }
-
+        // ---- Toggle functions ----
         function toggleDCard(c) {
             const p = c.querySelector('.dcard-panel'),
                 o = c.classList.contains('open');
@@ -1193,9 +1205,91 @@
             }
         }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+        // ---- Chargement des données ----
+        Promise.all([
+            fetch(`${API_URL}?query=gouvernance_schema`).then(r => r.json()),
+            fetch(`${API_URL}?query=gouvernance`).then(r => r.json())
+        ]).then(([schema, membres]) => {
+            // Schéma
+            document.getElementById('schema-flow').innerHTML = schema.map((n, i) =>
+                `${i>0?'<div class="schema-node-arrow">→</div>':''}
+             <div class="schema-node accent">
+                 <div class="schema-node-name">${escapeHtml(n.titre)}</div>
+                 <div class="schema-node-desc">${escapeHtml(n.description||'')}</div>
+                 ${n.reunion?`<span class="schema-freq">${escapeHtml(n.reunion)}</span>`:''}
+             </div>`
+            ).join('');
+
+            // Fonction de tri alphabétique (prénom + nom)
+            const sortByName = (a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
+                sensitivity: 'base'
+            });
+
+            // 1. Direction : ne garder que Marie Bal et Emmanuelle Salim
+            const directionAll = membres.filter(m => m.type === 'direction');
+            const directionFiltered = directionAll.filter(m => {
+                const name = fullName(m);
+                return name === 'Marie Bal' || name === 'Emmanuelle Salim';
+            });
+            // On les trie (par ordre alphabétique, mais on peut aussi les laisser dans l'ordre de la BDD)
+            directionFiltered.sort(sortByName);
+            document.getElementById('direction-grid').innerHTML = directionFiltered.map((m, i) => renderDir(m, i)).join('');
+
+            // 2. Conseil de groupement : séparer Emmanuelle Garnier des autres
+            const cgAll = membres.filter(m => m.type === 'conseil_groupement');
+            const president = cgAll.find(m => fullName(m) === 'Emmanuelle Garnier');
+            const autresCG = cgAll.filter(m => fullName(m) !== 'Emmanuelle Garnier').sort(sortByName);
+
+            // Mettre la Présidente en featured
+            if (president) {
+                document.getElementById('cg-featured').innerHTML = renderFeatured(president);
+            } else {
+                document.getElementById('cg-featured').innerHTML = ''; // si absente, vide
+            }
+            // Les autres membres (dont Florence Mazier) en grille standard
+            document.getElementById('cg-grid').innerHTML = autresCG.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
+
+            // 3. Bureau (type 'bureau')
+            const bureau = membres.filter(m => m.type === 'bureau').sort(sortByName);
+            document.getElementById('bureau-grid').innerHTML = bureau.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
+
+            // 4. Conseil Scientifique
+            const cs = membres.filter(m => m.type === 'conseil_scientifique').sort(sortByName);
+            document.getElementById('cs-grid').innerHTML = cs.map(m => renderPerson(m, '')).join('');
+
+            // 5. Comité d'Orientation
+            const co = membres.filter(m => m.type === 'comite_orientation').sort(sortByName);
+            document.getElementById('co-grid').innerHTML = co.map(m => renderPerson(m, 'mist')).join('');
+
+            initPage();
+        }).catch(err => console.error('Erreur:', err));
+
+        // ---- Initialisation (fade-in et scroll spy) ----
+        function initPage() {
+            const obs = new IntersectionObserver(e => {
+                e.forEach(x => {
+                    if (x.isIntersecting) {
+                        x.target.classList.add('visible');
+                        obs.unobserve(x.target);
+                    }
+                });
+            }, {
+                threshold: 0.06,
+                rootMargin: '0px 0px -36px 0px'
+            });
+            document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+            const sec = document.querySelectorAll('section[id]'),
+                nav = document.querySelectorAll('.gov-sitenav__a');
+            window.addEventListener('scroll', () => {
+                let c = '';
+                sec.forEach(s => {
+                    if (scrollY >= s.offsetTop - 130) c = s.id;
+                });
+                nav.forEach(a => a.classList.toggle('gov-sitenav__a--active', a.getAttribute('href') === '#' + c));
+            }, {
+                passive: true
+            });
         }
     </script>
 </body>
