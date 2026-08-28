@@ -299,8 +299,10 @@ $type_preselection = $_GET['type'] ?? '';
                 <label>Type de membre <span class="required">*</span></label>
                 <select id="type-select" class="form-control">
                     <option value="">-- Choisissez un type --</option>
+                    <option value="presidence" <?= $type_preselection === 'presidence' ? 'selected' : '' ?>>Présidence</option>
                     <option value="direction" <?= $type_preselection === 'direction' ? 'selected' : '' ?>>Direction</option>
                     <option value="conseil_groupement" <?= $type_preselection === 'conseil_groupement' ? 'selected' : '' ?>>Conseil de groupement</option>
+                    <option value="bureau" <?= $type_preselection === 'bureau' ? 'selected' : '' ?>>Bureau</option>
                     <option value="conseil_scientifique" <?= $type_preselection === 'conseil_scientifique' ? 'selected' : '' ?>>Conseil scientifique</option>
                     <option value="comite_orientation" <?= $type_preselection === 'comite_orientation' ? 'selected' : '' ?>>Comité d'orientation</option>
                 </select>
@@ -345,10 +347,12 @@ $type_preselection = $_GET['type'] ?? '';
         };
 
         const fieldsByType = {
-            direction: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
-            conseil_groupement: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'unites', 'ordre'],
-            conseil_scientifique: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
-            comite_orientation: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre']
+            presidence: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
+            direction: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
+            conseil_groupement: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            bureau: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            conseil_scientifique: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            comite_orientation: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre']
         };
 
         function genererChamps(type) {

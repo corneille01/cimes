@@ -686,7 +686,7 @@ function ajouter_modif_gouvernance_entite($input)
 {
     $pdo = getConnexion();
     $type = $input['type'] ?? '';
-    $allowedTypes = ['direction', 'conseil_groupement', 'conseil_scientifique', 'comite_orientation'];
+    $allowedTypes = ['presidence', 'direction', 'conseil_groupement', 'bureau', 'conseil_scientifique', 'comite_orientation'];
     if (!in_array($type, $allowedTypes)) {
         echo 'ko_type';
         return;
@@ -727,7 +727,7 @@ function ajouter_modif_gouvernance_entite($input)
         }
     }
 
-    // Champs communs – adaptés aux nouvelles colonnes de la table
+    // Champs communs – adaptés aux colonnes de la table
     $champs = [
         ':type'              => $type,
         ':prenom'            => trim($input['prenom'] ?? ''),

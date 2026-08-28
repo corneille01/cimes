@@ -102,15 +102,12 @@ if (!isset($_SESSION['id'])) {
             border: 1px solid var(--border);
             padding: 20px;
             margin-bottom: 40px;
-            /* plus de overflow-y: auto ici */
         }
 
         .table-scroll {
             max-height: calc(100vh - 280px);
-            /* hauteur max de la zone défilante */
             overflow-y: auto;
             border-top: 1px solid var(--border);
-            /* légère séparation visuelle */
             margin-top: 12px;
         }
 
@@ -270,13 +267,17 @@ if (!isset($_SESSION['id'])) {
                     const select = document.getElementById('filtre-type');
                     if (!select) return;
                     select.innerHTML = '<option value="">Tous</option>';
+                    const labels = {
+                        'presidence': 'Présidence',
+                        'direction': 'Direction',
+                        'conseil_groupement': 'Conseil de groupement',
+                        'bureau': 'Bureau',
+                        'conseil_scientifique': 'Conseil scientifique',
+                        'comite_orientation': 'Comité d\'orientation'
+                    };
                     data.forEach(item => {
                         const type = item.type;
-                        let label = type;
-                        if (type === 'direction') label = 'Direction';
-                        else if (type === 'conseil_groupement') label = 'Conseil de groupement';
-                        else if (type === 'conseil_scientifique') label = 'Conseil scientifique';
-                        else if (type === 'comite_orientation') label = 'Comité d\'orientation';
+                        const label = labels[type] || type;
                         select.innerHTML += `<option value="${type}">${label}</option>`;
                     });
                 })
@@ -286,25 +287,31 @@ if (!isset($_SESSION['id'])) {
         function chargerMembres(type = '') {
             const tbody = document.getElementById('corp_tab');
             if (!tbody) return;
-            tbody.innerHTML = '<tr><td colspan="6">Chargement...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5">Chargement...</td></tr>';
             let url = `${API_URL}?query=gouvernance`;
             if (type) url += `&type=${encodeURIComponent(type)}`;
             fetch(url)
                 .then(r => r.json())
                 .then(data => {
                     if (!Array.isArray(data)) {
-                        tbody.innerHTML = '<tr><td colspan="6">Erreur format données</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="5">Erreur format données</td></tr>';
                         return;
                     }
                     if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="6">Aucune entrée</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="5">Aucune entrée</td></tr>';
                         return;
                     }
+                    const labels = {
+                        'presidence': 'Présidence',
+                        'direction': 'Direction',
+                        'conseil_groupement': 'Conseil de groupement',
+                        'bureau': 'Bureau',
+                        'conseil_scientifique': 'Conseil scientifique',
+                        'comite_orientation': 'Comité d\'orientation'
+                    };
                     let html = '';
                     data.forEach(item => {
-                        let typeLabel = item.type === 'direction' ? 'Direction' :
-                            (item.type === 'conseil_groupement' ? 'CG' :
-                                (item.type === 'conseil_scientifique' ? 'CS' : 'CO'));
+                        const typeLabel = labels[item.type] || item.type;
                         const nomComplet = item.prenom ? `${item.prenom} ${item.nom}` : item.nom;
                         html += `
                         <tr>
@@ -319,30 +326,29 @@ if (!isset($_SESSION['id'])) {
                     tbody.innerHTML = html;
                 })
                 .catch(err => {
-                    tbody.innerHTML = `<tr><td colspan="6">Erreur : ${err.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5">Erreur : ${err.message}</td></tr>`;
                 });
         }
 
         function chargerSchema() {
             const tbody = document.getElementById('schema_tab');
             if (!tbody) return;
-            tbody.innerHTML = '<tr><td colspan="7">Chargement...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6">Chargement...</td></tr>';
             fetch(`${API_URL}?query=gouvernance_schema`)
                 .then(r => r.json())
                 .then(data => {
                     if (!Array.isArray(data)) {
-                        tbody.innerHTML = '<tr><td colspan="7">Erreur format données</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="6">Erreur format données</td></tr>';
                         return;
                     }
                     if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="7">Aucune entrée</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="6">Aucune entrée</td></tr>';
                         return;
                     }
                     let html = '';
                     data.forEach(item => {
                         html += `
                         <tr>
-                            
                             <td>${escapeHtml(item.titre)}</td>
                             <td>${escapeHtml(item.description)}</td>
                             <td>${escapeHtml(item.reunion)}</td>
@@ -355,7 +361,7 @@ if (!isset($_SESSION['id'])) {
                     tbody.innerHTML = html;
                 })
                 .catch(err => {
-                    tbody.innerHTML = `<tr><td colspan="7">Erreur : ${err.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6">Erreur : ${err.message}</td></tr>`;
                 });
         }
 
@@ -448,8 +454,10 @@ if (!isset($_SESSION['id'])) {
                 <h3>Choisir le type de membre</h3>
                 <select id="type-select-ajout" style="width:100%; padding:10px; margin:15px 0;">
                     <option value="">-- Sélectionnez --</option>
+                    <option value="presidence">Présidence</option>
                     <option value="direction">Direction</option>
                     <option value="conseil_groupement">Conseil de groupement</option>
+                    <option value="bureau">Bureau</option>
                     <option value="conseil_scientifique">Conseil scientifique</option>
                     <option value="comite_orientation">Comité d'orientation</option>
                 </select>

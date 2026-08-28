@@ -8,10 +8,10 @@ $id = (int)($_GET['id'] ?? 0);
 if ($id <= 0) die("ID invalide");
 ?>
 <?php include('include/head.html'); ?>
-
 <title>Modifier – Gouvernance</title>
 <meta name="description" content="Formulaire de modification d'un membre de la gouvernance">
 <style>
+    /* --- styles identiques à ajout_gouvernance --- */
     :root {
         --header-height: 80px;
         --green-dark: #0F6E56;
@@ -310,6 +310,12 @@ if ($id <= 0) die("ID invalide");
         <div class="form-card">
             <p class="form-card__title"><i class="fa-solid fa-users"></i> Informations</p>
             <input type="hidden" id="gouv-id" value="<?= $id ?>">
+            <div class="form-group">
+                <label>Type de membre <span class="required">*</span></label>
+                <select id="type-select" class="form-control">
+                    <!-- Les options seront remplies par JavaScript -->
+                </select>
+            </div>
             <div id="fields-container"></div>
             <div class="form-group">
                 <label>Photo actuelle</label>
@@ -333,7 +339,9 @@ if ($id <= 0) die("ID invalide");
 
     <script>
         const id = <?= $id ?>;
+        const API_URL = '../cimes_api/index_api.php';
         let currentType = '';
+        let currentMember = null;
         let fieldsList = [];
 
         const fieldLabels = {
@@ -355,43 +363,98 @@ if ($id <= 0) die("ID invalide");
         };
 
         const fieldsByType = {
-            direction: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
-            conseil_groupement: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'unites', 'ordre'],
-            conseil_scientifique: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
-            comite_orientation: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'tutelle', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre']
+            presidence: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
+            direction: ['prenom', 'nom', 'email', 'fonction', 'role', 'page_web', 'laboratoire', 'page_web_labo', 'etablissement', 'discipline', 'bio', 'terrain_recherche', 'ordre'],
+            conseil_groupement: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            bureau: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            conseil_scientifique: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre'],
+            comite_orientation: ['prenom', 'nom', 'role', 'fonction', 'laboratoire', 'email', 'ordre']
         };
 
-        fetch(`../cimes_api/index_api.php?query=gouvernance&id=${id}`)
-            .then(r => r.json())
-            .then(data => {
-                const item = Array.isArray(data) ? data[0] : data;
+        function genererChamps(type, memberData) {
+            const container = document.getElementById('fields-container');
+            container.innerHTML = '';
+            if (!type || !fieldsByType[type]) return;
+            const fields = fieldsByType[type];
+            fields.forEach(field => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                let value = memberData && memberData[field] ? memberData[field] : '';
+                let input;
+                if (['bio', 'unites', 'terrain_recherche'].includes(field)) {
+                    input = `<textarea id="field-${field}" class="form-control" rows="4" placeholder="${fieldLabels[field] || field}">${escapeHtml(value)}</textarea>`;
+                } else if (field === 'ordre') {
+                    input = `<input type="number" id="field-${field}" class="form-control" value="${escapeHtml(value)}" placeholder="${fieldLabels[field] || field}">`;
+                } else {
+                    input = `<input type="text" id="field-${field}" class="form-control" value="${escapeHtml(value)}" placeholder="${fieldLabels[field] || field}">`;
+                }
+                div.innerHTML = `<label>${fieldLabels[field] || field}</label>${input}`;
+                container.appendChild(div);
+            });
+        }
+
+        // Remplir le select avec les types existants
+        function chargerTypesEtMembre() {
+            Promise.all([
+                fetch(`${API_URL}?query=gouvernance_types`).then(r => r.json()),
+                fetch(`${API_URL}?query=gouvernance&id=${id}`).then(r => r.json())
+            ]).then(([typesData, memberData]) => {
+                const item = Array.isArray(memberData) ? memberData[0] : memberData;
                 if (!item) return;
+                currentMember = item;
                 currentType = item.type;
-                fieldsList = fieldsByType[currentType] || [];
-                const container = document.getElementById('fields-container');
-                container.innerHTML = '';
-                fieldsList.forEach(field => {
-                    const div = document.createElement('div');
-                    div.className = 'form-group';
-                    let value = item[field] ?? '';
-                    let input;
-                    if (['bio', 'unites', 'terrain_recherche'].includes(field)) {
-                        input = `<textarea id="field-${field}" class="form-control" rows="4">${escapeHtml(value)}</textarea>`;
-                    } else if (field === 'ordre') {
-                        input = `<input type="number" id="field-${field}" class="form-control" value="${escapeHtml(value)}">`;
-                    } else {
-                        input = `<input type="text" id="field-${field}" class="form-control" value="${escapeHtml(value)}">`;
-                    }
-                    div.innerHTML = `<label>${fieldLabels[field] || field}</label>${input}`;
-                    container.appendChild(div);
+
+                // Remplir le select
+                const select = document.getElementById('type-select');
+                select.innerHTML = ''; // vider
+                // Définir un ordre personnalisé si besoin
+                const typeOrder = ['presidence', 'direction', 'conseil_groupement', 'bureau', 'conseil_scientifique', 'comite_orientation'];
+                // Trier les types selon l'ordre ou alphabétique
+                typesData.sort((a, b) => {
+                    const indexA = typeOrder.indexOf(a.type);
+                    const indexB = typeOrder.indexOf(b.type);
+                    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
                 });
+                typesData.forEach(typeObj => {
+                    const opt = document.createElement('option');
+                    opt.value = typeObj.type;
+                    let label = typeObj.type;
+                    const labels = {
+                        'presidence': 'Présidence',
+                        'direction': 'Direction',
+                        'conseil_groupement': 'Conseil de groupement',
+                        'bureau': 'Bureau',
+                        'conseil_scientifique': 'Conseil scientifique',
+                        'comite_orientation': 'Comité d\'orientation'
+                    };
+                    label = labels[typeObj.type] || typeObj.type;
+                    opt.textContent = label;
+                    if (typeObj.type === currentType) opt.selected = true;
+                    select.appendChild(opt);
+                });
+
+                // Générer les champs pour le type actuel
+                genererChamps(currentType, currentMember);
+
                 if (item.photo) {
                     document.getElementById('current-photo').innerHTML = `<img src="../cimes_clients/img/${item.photo}" alt="Photo actuelle" style="max-width:150px;">`;
                 } else {
                     document.getElementById('current-photo').innerHTML = '<span class="text-muted">Aucune photo</span>';
                 }
-            })
-            .catch(err => console.error("Erreur chargement :", err));
+            }).catch(err => console.error("Erreur chargement :", err));
+        }
+
+        // Écouter le changement de type pour régénérer les champs
+        document.getElementById('type-select').addEventListener('change', function(e) {
+            const newType = e.target.value;
+            if (newType) {
+                // Conserver les données du membre (currentMember) mais on peut les réutiliser
+                genererChamps(newType, currentMember);
+            }
+        });
+
+        // Initialiser
+        chargerTypesEtMembre();
 
         const fileInput = document.getElementById('photo');
         const previewDiv = document.getElementById('preview');
@@ -409,11 +472,13 @@ if ($id <= 0) die("ID invalide");
         });
 
         window.getFormData = function() {
+            const type = document.getElementById('type-select').value;
+            const fields = fieldsByType[type] || [];
             const data = {
-                type: currentType,
+                type: type,
                 id: id
             };
-            fieldsList.forEach(field => {
+            fields.forEach(field => {
                 const input = document.getElementById(`field-${field}`);
                 if (input) data[field] = input.value.trim();
             });

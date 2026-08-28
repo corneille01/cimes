@@ -2,7 +2,7 @@
 <title>Gouvernance du CIMeS</title>
 <meta name="description" content="">
 <style>
-    /* ── TOUS LES STYLES (EXISTANTS) ── */
+    /* ── TOUS LES STYLES (inchangés) ── */
     @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
     :root {
@@ -274,14 +274,11 @@
         margin-bottom: 80px;
     }
 
-    .direction-grid {
+    .direction-grid,
+    .presidence-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
-    }
-
-    .direction-grid .dcard:first-child {
-        grid-column: 1 / -1;
     }
 
     .people-grid {
@@ -290,7 +287,7 @@
         gap: 16px;
     }
 
-    /* ════════════════ CARTE DIRECTION ════════════════ */
+    /* ════════════════ CARTE DIRECTION / PRÉSIDENCE ════════════════ */
     .dcard {
         background: var(--surface);
         border-radius: 2px;
@@ -330,6 +327,10 @@
 
     .dcard-banner.clr-sage {
         background: linear-gradient(135deg, #1a4d35 0%, #2d7a58 60%, #3ea07a 100%);
+    }
+
+    .dcard-banner.clr-presidence {
+        background: linear-gradient(135deg, #0d5e4a, #0F766E, #1ca098);
     }
 
     .dcard-banner::after {
@@ -382,6 +383,11 @@
 
     .dcard-badge.sage {
         background: #2d7a58;
+    }
+
+    .dcard-badge.presidence {
+        background: #C9D95B;
+        color: var(--vert-dark);
     }
 
     .dcard-body {
@@ -463,7 +469,7 @@
         padding: 20px 24px 24px;
     }
 
-    /* ════════════════ CARTE PERSONNES ════════════════ */
+    /* ════════════════ CARTE PERSONNES (CG, Bureau, CS, CO) ════════════════ */
     .pcard {
         background: var(--surface);
         border-radius: 2px;
@@ -704,110 +710,23 @@
         border: 1px solid rgba(15, 118, 110, .16);
     }
 
-    /* ════════════════ CARTE FEATURED (Présidente) ════════════════ */
+    /* ── FEATURED (un seul président) ── */
     .featured-wrap {
-        display: flex;
-        justify-content: center;
+        display: block;
         margin-bottom: 30px;
-    }
-
-    .featured-card {
-        max-width: 480px;
         width: 100%;
-        background: var(--surface);
-        border: 2px solid var(--vert-mid);
-        border-radius: 2px;
-        overflow: hidden;
-        box-shadow: 0 12px 32px rgba(15, 118, 110, .15);
-        transition: transform .3s, box-shadow .3s;
     }
 
-    .featured-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 48px rgba(15, 118, 110, .2);
+    .featured-wrap .dcard {
+        width: 100%;
+        max-width: 100%;
+        border: 2.5px solid #C9D95B;
+        box-shadow: 0 8px 32px rgba(201, 217, 91, .25);
     }
 
-    .featured-card .fc-banner {
-        height: 60px;
-        background: linear-gradient(135deg, var(--vert-dark), var(--vert));
-        position: relative;
-    }
-
-    .featured-card .fc-banner::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .06) 0px, rgba(255, 255, 255, .06) 1px, transparent 1px, transparent 18px);
-    }
-
-    .featured-card .fc-photo-wrap {
-        display: flex;
-        justify-content: center;
-        margin-top: -46px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .featured-card .fc-photo {
-        width: 92px;
-        height: 92px;
-        border-radius: 50%;
-        border: 5px solid var(--surface);
-        object-fit: cover;
-        object-position: center top;
-        box-shadow: 0 4px 24px rgba(15, 118, 110, .25);
-        background: var(--bg);
-    }
-
-    .featured-card .fc-badge {
-        position: absolute;
-        bottom: -2px;
-        right: calc(50% - 60px);
-        background: #C9D95B;
-        color: var(--vert-dark);
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: .1em;
-        text-transform: uppercase;
-        padding: 4px 14px;
-        border-radius: 20px;
-        border: 3px solid var(--surface);
-        white-space: nowrap;
-    }
-
-    .featured-card .fc-body {
-        padding: 16px 24px 28px;
-        text-align: center;
-    }
-
-    .featured-card .fc-name {
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--text);
-        line-height: 1.15;
-        margin-bottom: 2px;
-    }
-
-    .featured-card .fc-role {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: var(--vert);
-        margin-bottom: 6px;
-    }
-
-    .featured-card .fc-domain {
-        font-size: 14px;
-        color: var(--muted);
-        line-height: 1.5;
-    }
-
-    .featured-card .fc-affil {
-        font-size: 13px;
-        color: var(--hint);
-        margin-top: 4px;
-        font-style: italic;
+    .featured-wrap .dcard:hover {
+        box-shadow: 0 16px 48px rgba(201, 217, 91, .35);
+        border-color: #b5c74e;
     }
 
     /* ── PARTENAIRES ── */
@@ -847,12 +766,10 @@
     }
 
     @media (max-width: 960px) {
-        .direction-grid {
-            grid-template-columns: 1fr 1fr;
-        }
 
-        .direction-grid .dcard:first-child {
-            grid-column: 1 / -1;
+        .direction-grid,
+        .presidence-grid {
+            grid-template-columns: 1fr 1fr;
         }
     }
 
@@ -875,25 +792,17 @@
             flex-direction: column;
         }
 
-        .direction-grid {
+        .direction-grid,
+        .presidence-grid {
             grid-template-columns: 1fr;
-        }
-
-        .direction-grid .dcard:first-child {
-            grid-column: auto;
         }
 
         .people-grid {
             grid-template-columns: 1fr;
         }
 
-        .featured-card .fc-name {
-            font-size: 22px;
-        }
-
-        .featured-card .fc-photo {
-            width: 72px;
-            height: 72px;
+        .featured-wrap .dcard {
+            max-width: 100%;
         }
     }
 </style>
@@ -934,7 +843,9 @@
                 </div>
                 <div class="sec-ghost">CG</div>
             </div>
-            <div id="cg-featured" class="featured-wrap"></div>
+            <!-- Conteneur pour la Présidence (un ou plusieurs) -->
+            <div id="presidence-container"></div>
+            <!-- Conteneur pour le Conseil de groupement -->
             <div class="people-grid" id="cg-grid"></div>
         </section>
 
@@ -999,9 +910,9 @@
 
     <script>
         const API_URL = '../cimes_api/index_api.php';
-        const DIR_BADGES = ['Présidente', 'Directrice', 'Dir. Adjoint'];
-        const DIR_BADGE_C = ['gold', '', 'sage'];
-        const DIR_BANNER = ['clr-gold', 'clr-green', 'clr-sage'];
+        const DIR_BADGES = ['Directrice', 'Dir. Adjoint'];
+        const DIR_BADGE_C = ['', 'sage'];
+        const DIR_BANNER = ['clr-green', 'clr-sage'];
         const CG_DOTS = ['deep', 'plum', 'terra', 'teal', 'gold', 'sage', 'deep'];
 
         // ---- UTILITAIRES ----
@@ -1011,7 +922,6 @@
             return (p + ' ' + n).trim();
         }
 
-        // Normalisation : sans accents, minuscules
         function normalizeName(str) {
             return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         }
@@ -1022,28 +932,25 @@
             return `https://ui-avatars.com/api/?name=${name}&background=${bg}&color=${color}&size=${size}&bold=true&font-size=${fontsize}`;
         }
 
-        function disciplineTags(m) {
-            if (!m.discipline) return '';
-            return m.discipline.split(',').map(t => `<span class="tag">${escapeHtml(t.trim())}</span>`).join('');
-        }
-
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
         }
 
-        // ---- FONCTIONS DE RENDU ----
-        function renderDir(m, i) {
+        // ---- FONCTION DE RENDU POUR DIRECTION ET PRÉSIDENCE ----
+        function renderDCard(m, i, type, customBadge = null) {
             const name = fullName(m);
             const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
-            const tags = disciplineTags(m);
             const affil = m.laboratoire || m.tutelle || '';
+            const badge = customBadge || (type === 'presidence' ? 'Président(e)' : (DIR_BADGES[i] || ''));
+            const bannerClass = (type === 'presidence') ? 'clr-presidence' : (DIR_BANNER[i] || 'clr-green');
+            const badgeClass = (type === 'presidence') ? 'presidence' : (DIR_BADGE_C[i] || '');
             return `
         <div class="dcard" onclick="toggleDCard(this)">
-            <div class="dcard-banner ${DIR_BANNER[i]||'clr-green'}"></div>
+            <div class="dcard-banner ${bannerClass}"></div>
             <div class="dcard-photo-wrap">
                 <img class="dcard-photo" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=0F766E&color=fff&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
-                <span class="dcard-badge ${DIR_BADGE_C[i]||''}">${DIR_BADGES[i]||''}</span>
+                <span class="dcard-badge ${badgeClass}">${badge}</span>
             </div>
             <div class="dcard-body">
                 <div class="dcard-name">${escapeHtml(name)}</div>
@@ -1058,39 +965,18 @@
                 ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
                 ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
                 ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-                ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
                 ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-                ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
+                ${m.discipline?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${m.discipline.split(',').map(t=>`<span class="tag">${escapeHtml(t.trim())}</span>`).join('')}</div></div></div>`:''}
                 ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
                 ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
             </div></div>
         </div>`;
         }
 
-        function renderFeatured(m) {
-            const name = fullName(m);
-            const p = avatarUrl(m, '0F766E', 'fff', 120, 0.45);
-            const affil = m.etablissement || m.laboratoire || '';
-            return `
-        <div class="featured-card">
-            <div class="fc-banner"></div>
-            <div class="fc-photo-wrap">
-                <img class="fc-photo" src="${p}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name||'?')}&background=0F766E&color=fff&size=120&bold=true&font-size=0.45'" alt="${escapeHtml(name)}">
-                <span class="fc-badge">Présidente</span>
-            </div>
-            <div class="fc-body">
-                <div class="fc-name">${escapeHtml(name)}</div>
-                <div class="fc-role">${escapeHtml(m.role||'')}</div>
-                <div class="fc-domain">${escapeHtml(m.discipline||'')}</div>
-                <div class="fc-affil">${escapeHtml(affil)}</div>
-            </div>
-        </div>`;
-        }
-
+        // ---- FONCTION POUR LES CARTES PERSONNES (CG, Bureau, CS, CO) ----
         function renderPerson(m, dotClass = '') {
             const name = fullName(m);
             const p = avatarUrl(m, '134e4a', '9FE1CB', 120, 0.45);
-            const tags = disciplineTags(m);
             const affil = m.etablissement || m.laboratoire || '';
             const dot = dotClass ? `av-dot ${dotClass}` : 'av-dot';
             return `
@@ -1109,17 +995,7 @@
                 <div class="toggle-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div>
             </div>
             <div class="acc-panel"><div class="acc-body">
-                ${m.fonction?`<div class="acc-row"><div class="acc-lbl">Fonction</div><div class="acc-val">${escapeHtml(m.fonction)}</div></div>`:''}
                 ${m.email?`<div class="acc-row"><div class="acc-lbl">Email</div><div class="acc-val"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></div></div>`:''}
-                ${m.page_web?`<div class="acc-row"><div class="acc-lbl">Page web</div><div class="acc-val"><a href="${escapeHtml(m.page_web)}" target="_blank">${escapeHtml(m.page_web)}</a></div></div>`:''}
-                ${m.etablissement?`<div class="acc-row"><div class="acc-lbl">Établissement</div><div class="acc-val">${escapeHtml(m.etablissement)}</div></div>`:''}
-                ${m.laboratoire?`<div class="acc-row"><div class="acc-lbl">Laboratoire</div><div class="acc-val">${escapeHtml(m.laboratoire)}</div></div>`:''}
-                ${m.page_web_labo?`<div class="acc-row"><div class="acc-lbl">Page web labo</div><div class="acc-val"><a href="${escapeHtml(m.page_web_labo)}" target="_blank">${escapeHtml(m.page_web_labo)}</a></div></div>`:''}
-                ${m.tutelle?`<div class="acc-row"><div class="acc-lbl">Tutelle(s)</div><div class="acc-val">${escapeHtml(m.tutelle)}</div></div>`:''}
-                ${tags?`<div class="acc-row"><div class="acc-lbl">Discipline(s)</div><div class="acc-val"><div class="acc-tags">${tags}</div></div></div>`:''}
-                ${m.terrain_recherche?`<div class="acc-row"><div class="acc-lbl">Terrain(s) de recherche</div><div class="acc-val">${escapeHtml(m.terrain_recherche)}</div></div>`:''}
-                ${m.unites?`<div class="acc-row"><div class="acc-lbl">Unité(s) associée(s)</div><div class="acc-val"><div class="acc-tags">${m.unites.split(',').map(t=>`<span class="tag">${escapeHtml(t.trim())}</span>`).join('')}</div></div></div>`:''}
-                ${m.bio?`<div class="acc-bio">${escapeHtml(m.bio)}</div>`:''}
             </div></div>
         </div>`;
         }
@@ -1182,41 +1058,43 @@
              </div>`
             ).join('');
 
-            const sortByName = (a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
-                sensitivity: 'base'
-            });
-
-            // 1. Direction : Marie Bal et Emmanuelle Salim uniquement
-            const directionAll = membres.filter(m => m.type === 'direction');
-            const directionFiltered = directionAll.filter(m => {
-                const name = normalizeName(fullName(m));
-                return name === normalizeName('Marie Bal') || name === normalizeName('Emmanuelle Salim');
-            });
-            directionFiltered.sort(sortByName);
-            document.getElementById('direction-grid').innerHTML = directionFiltered.map((m, i) => renderDir(m, i)).join('');
-
-            // 2. Conseil de groupement : Emmanuelle Garnier en featured
-            const cgAll = membres.filter(m => m.type === 'conseil_groupement');
-            const president = cgAll.find(m => normalizeName(fullName(m)) === normalizeName('Emmanuelle Garnier'));
-            const autresCG = cgAll.filter(m => normalizeName(fullName(m)) !== normalizeName('Emmanuelle Garnier')).sort(sortByName);
-
-            if (president) {
-                document.getElementById('cg-featured').innerHTML = renderFeatured(president);
+            // ---- 1. PRÉSIDENCE : garder l'ordre de la base (pas de tri) ----
+            const presidence = membres.filter(m => m.type === 'presidence');
+            const containerPres = document.getElementById('presidence-container');
+            if (presidence.length === 0) {
+                containerPres.innerHTML = '';
+            } else if (presidence.length === 1) {
+                containerPres.innerHTML = `<div class="featured-wrap">${renderDCard(presidence[0], 0, 'presidence')}</div>`;
             } else {
-                document.getElementById('cg-featured').innerHTML = '';
+                containerPres.innerHTML = `<div class="presidence-grid">${presidence.map((m, i) => renderDCard(m, i, 'presidence')).join('')}</div>`;
             }
-            document.getElementById('cg-grid').innerHTML = autresCG.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
 
-            // 3. Bureau
-            const bureau = membres.filter(m => m.type === 'bureau').sort(sortByName);
+            // ---- 2. CONSEIL DE GROUPEMENT : tri alphabétique ----
+            const cgAll = membres.filter(m => m.type === 'conseil_groupement').sort((a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
+                sensitivity: 'base'
+            }));
+            document.getElementById('cg-grid').innerHTML = cgAll.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
+
+            // ---- 3. DIRECTION : garder l'ordre de la base (pas de tri) ----
+            const directionAll = membres.filter(m => m.type === 'direction');
+            document.getElementById('direction-grid').innerHTML = directionAll.map((m, i) => renderDCard(m, i, 'direction')).join('');
+
+            // ---- 4. BUREAU : tri alphabétique ----
+            const bureau = membres.filter(m => m.type === 'bureau').sort((a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
+                sensitivity: 'base'
+            }));
             document.getElementById('bureau-grid').innerHTML = bureau.map((m, i) => renderPerson(m, CG_DOTS[i % CG_DOTS.length])).join('');
 
-            // 4. Conseil Scientifique
-            const cs = membres.filter(m => m.type === 'conseil_scientifique').sort(sortByName);
+            // ---- 5. CONSEIL SCIENTIFIQUE : tri alphabétique ----
+            const cs = membres.filter(m => m.type === 'conseil_scientifique').sort((a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
+                sensitivity: 'base'
+            }));
             document.getElementById('cs-grid').innerHTML = cs.map(m => renderPerson(m, '')).join('');
 
-            // 5. Comité d'Orientation
-            const co = membres.filter(m => m.type === 'comite_orientation').sort(sortByName);
+            // ---- 6. COMITÉ D'ORIENTATION : tri alphabétique ----
+            const co = membres.filter(m => m.type === 'comite_orientation').sort((a, b) => fullName(a).localeCompare(fullName(b), 'fr', {
+                sensitivity: 'base'
+            }));
             document.getElementById('co-grid').innerHTML = co.map(m => renderPerson(m, 'mist')).join('');
 
             initPage();
